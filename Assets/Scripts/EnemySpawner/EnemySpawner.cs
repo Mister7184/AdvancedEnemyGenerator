@@ -4,7 +4,7 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private Enemy _enemyPrefab;
-    [SerializeField] private Transform _target;
+    [SerializeField] private TargetMover _target;
     [SerializeField] private Transform _spawnPoint;
 
     private Pool<Enemy> _pool;
@@ -25,19 +25,19 @@ public class EnemySpawner : MonoBehaviour
         while (_isWork)
         {
             Enemy enemy = _pool.Get();
-            enemy.LifeTimeEnded += OnLifeTimeEnded;
+            enemy.TouchedTarget += OnTouchedTarget;
 
             enemy.transform.position = _spawnPoint.position;
 
-            enemy.SetTarget(_target);
+            enemy.StartMoveToTarget(_target);
 
             yield return _spawnDelay;
         }
     }
 
-    private void OnLifeTimeEnded(Enemy enemy)
+    private void OnTouchedTarget(Enemy enemy)
     {
-        enemy.LifeTimeEnded -= OnLifeTimeEnded;
+        enemy.TouchedTarget -= OnTouchedTarget;
         _pool.Release(enemy);
     }
 }

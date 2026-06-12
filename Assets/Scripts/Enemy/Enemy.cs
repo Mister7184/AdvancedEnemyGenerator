@@ -6,28 +6,31 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     private EnemyMover _enemyMover;
-    private float _lifeTimeSeconds = 3f;
-    private WaitForSeconds _lifeTime;
+    private TargetMover _target;
 
-    public Action<Enemy> LifeTimeEnded;
+    public Action<Enemy> TouchedTarget;
 
     private void Awake()
     {
         _enemyMover = GetComponent<EnemyMover>();
-        _lifeTime = new WaitForSeconds(_lifeTimeSeconds);
     }
 
-    public void SetTarget(Transform target) 
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        _enemyMover.MoveTo(target);
+        if (other.gameObject.TryGetComponent<TargetMover>(out TargetMover target) == false)
+            return;
 
-        StartCoroutine(ReturnAfterTime());
+        if (_target != target)
+            return;
+
+        TouchedTarget?.Invoke(this);
     }
 
-    private IEnumerator ReturnAfterTime() 
+    public void StartMoveToTarget(TargetMover target) 
     {
-        yield return _lifeTime;
+        Debug.Log("—тартћув“у“аргет");
+        _target = target;
 
-        LifeTimeEnded?.Invoke(this);
+        _enemyMover.SetTarget(target);
     }
 }

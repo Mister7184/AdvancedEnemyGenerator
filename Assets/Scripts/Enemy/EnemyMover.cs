@@ -5,8 +5,7 @@ public class EnemyMover : MonoBehaviour
 {
     [SerializeField] private float _speed = 10f;
 
-    private bool _canMove;
-    private Transform _target;
+    private TargetMover _target;
     private Rigidbody2D _rigidbody;
 
     private void Awake()
@@ -16,16 +15,16 @@ public class EnemyMover : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_canMove == false)
+        if (_target == null)
             return;
 
-        Vector2 newPosition = Vector2.MoveTowards(_rigidbody.position, _target.position, _speed * Time.fixedDeltaTime);
+        Vector2 newPosition = Vector2.MoveTowards(_rigidbody.position, _target.transform.position, _speed * Time.fixedDeltaTime);
         _rigidbody.MovePosition(newPosition);
     }
 
-    public void MoveTo(Transform target)
+    public void SetTarget(TargetMover target)
     {
-        _canMove = true;
+        Debug.Log("СетТаргет");
 
         _target = target;
     }
