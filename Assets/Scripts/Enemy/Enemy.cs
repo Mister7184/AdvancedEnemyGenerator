@@ -28,7 +28,6 @@ public class Enemy : MonoBehaviour
 
     public void StartMoveToTarget(TargetMover target) 
     {
-        Debug.Log("—тартћув“у“аргет");
         _target = target;
 
         _enemyMover.SetTarget(target);

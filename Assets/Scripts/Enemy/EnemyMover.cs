@@ -24,8 +24,6 @@ public class EnemyMover : MonoBehaviour
 
     public void SetTarget(TargetMover target)
     {
-        Debug.Log("СетТаргет");
-
         _target = target;
     }
 
